@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Pig Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--added for device responsiveness-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css">
+  <!--added for icons in sensors section-->
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+  <div id="page">
+    <!--begin page-->
+
+    <div class="header">
+      <h1>Pig<span>Project</span></h1>
+      <h3>WiFi-version</h3>
+    </div>
+
+    <div class="container" data-bind="visible: !initialised()">
+      Loading, please wait...
+    </div>
+
+    <div class="container" data-bind="visible: initialised" style="display:none">
+      <!--begin container -->
+
+      <div id="content">
+
+        <div class="box380 left">
+          <h2>Switch Control</h2>
+          <div data-bind="foreach: $root.availableRelays">
+            <div class="switchBox">
+              <div class="switchName"><strong data-bind="text: '&nbsp;' + name()"></strong></div>
+
+              <div class="switchSlider">
+                <!--switch html code begins-->
+                <label class="relaySwitch">
+                  <input class="relaySwitch-input" type="checkbox" data-bind="checked: state, click: $root.onSwitchClick" />
+                  <span class="relaySwitch-label" data-on="On" data-off="Off"></span>
+                  <span class="relaySwitch-handle"></span>
+                </label>
+                <!--switch html code begins-->
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="box380 right">
+          <h2>Sensors</h2>
+          <div class="sensors-container">
+            <!--here defining the Sensors-->
+
+            <!--Sensor 1-->
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-thermometer-half" style="color:#0275d8"></i>
+                <span class="sensor-labels">Location Temperature</span>
+                <span data-bind="text: status.dallas_temperature()"></span>
+                <sup class="units">°C</sup>
+              </p>
+              <hr>
+            </div>
+
+            <!--Sensor 2-->
+            <div class="sensors">
+
+              <p class="sensor">
+                <i class="fas fa-thermometer-full" style="color:#d9534f"></i>
+                <span class="sensor-labels">Node Temperature</span>
+                <span data-bind="text: status.dht_temperature()"></span>
+                <sup class="units">°C</sup>
+              </p>
+              <hr>
+              <p class="sensor">
+                <i class="fas fa-tint" style="color:#5bc0de"></i>
+                <span class="sensor-labels">Location Humidity</span>
+                <span data-bind="text: status.dht_humidity()"></span>
+                <sup class="units">%</sup>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="box-full left">
+          <h2>Charts</h2>
+          <canvas id="dataplot" width="400" height="400"></canvas>
+        </div>
+
+        <div class="box380 left">
+          <h2>Latest Data</h2>
+          <p>
+            <input type="checkbox" id="latest_data_enabled" data-bind="checked: latest_data_enabled">
+            <label for="latest_data_enabled"><strong>Enable Data Info</strong></label>
+          </p>
+
+          <!--Data Table begins-->
+          <p>
+          <table data-bind= "visible: latest_data_enabled">
+            <!--Table column definitions row defined here-->
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+
+            <!--table data row 1 defined here-->
+            <tbody data-bind="foreach: last.values">
+              <tr>
+                <td data-bind="text: key"></td>
+                <td data-bind="text: value"></td>
+              </tr>
+            </tbody>
+
+          </table><br>
+          </p>
+          <!--Data Table Ends-->
+
+        </div>
+
+        <!--Logs table section begins-->
+        <div class="box380 right">
+          <h2>Logs</h2>
+          <p>
+            <input type="checkbox" id="logs_enabled" data-bind="checked: logs_enabled">
+            <label for="logs_enabled"><strong>Enable Logs</strong></label>
+          </p>
+
+          <!--Logs Table begins-->
+          <p>
+          <table id="logsTable" data-bind= "visible: logs_enabled">
+            <!--Table column definitions row defined here-->
+            <tr>
+              <th>Timestamp</th>
+              <th>Log</th>
+            </tr>
+            <tbody data-bind="foreach: logs.entries">
+              <tr>
+                <td data-bind="text: timestamp"></td>
+                <td data-bind="text: log"></td>
+              </tr>
+            </tbody>
+
+          </table><br>
+          </p>
+          <!--Logs Table Ends-->
+
+        </div>
+
+      </div>
+
+
+    </div>
+    <!--end container -->
+
+  </div> <!-- end page -->
+
+  <!--JAVASCRIPT CODE -->
+
+  <script src="lib.js" type="text/javascript"></script>
+  <script src="app.js" type="text/javascript"></script>
+
+</body>
+
+</html>
