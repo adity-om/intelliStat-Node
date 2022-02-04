@@ -1,6 +1,6 @@
 /*
 * File: config.cpp
-* Author: Adity Om
+* Author: Aditya Om
 * Description: Defines the firmware config parameters
 */
 
@@ -38,4 +38,14 @@ void config_load_settings(){
 
     EEPROM.end();
 
+}
+
+void config_save_relay_states(){
+
+    //Save the config relay states
+}
+
+void config_load_relay_states(){
+
+   //load the saved config relay states
 }
