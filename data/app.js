@@ -6,6 +6,7 @@ var dataChart;
 
 var RELAY_STATE_MESSAGE = 10;
 
+//Web App Buttonm definition
 function relayButton(id, name, state, onChange) {
   var self = this;
 
@@ -18,6 +19,7 @@ function relayButton(id, name, state, onChange) {
   });
 }
 
+//base view model skecth
 function BaseViewModel(defaults, remoteUrl, mappings) {
   if (mappings === undefined) {
     mappings = {};
@@ -43,6 +45,7 @@ BaseViewModel.prototype.update = function(after) {
   });
 };
 
+//status view model
 function StatusViewModel() {
   var self = this;
 
