@@ -1,3 +1,10 @@
+/*
+ * @Author: aditya om 
+ * @Date: 2022-02-04 20:48:46 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2022-02-04 20:49:09
+ */
+
 var baseHost = window.location.hostname; //returns the location of our ESP8266
 var baseEndpoint = 'http://' + baseHost;
 
