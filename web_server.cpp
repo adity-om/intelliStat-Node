@@ -1,8 +1,8 @@
 /*
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2022-02-06 22:28:53
+ * @Last Modified by: aditya om
+ * @Last Modified time: 2022-02-06 22:33:52
  */
 
 #include "FS.h"
@@ -24,10 +24,22 @@ bool enableCors = true;
 
 bool requestPreProcess(AsyncWebServerRequest *request, AsyncResponseStream *&response, const char *contentType="application/json"){
     //handle request pre processing
+    response = request->beginResponseStream(contentType);
+
+    if(enableCors){
+        response->addHeader("Access-Control-Allow-Origin","*");
+    }
+    return true;
 }
 
 void handleHome(AsyncWebServerRequest *request){
-   //handler the default home page
+   //handler the default home 
+   if(SPIFFS.exists("/home.html")){
+        request->send(SPIFFS, "/home.html"); 
+    }
+    else {
+        request->send(200, "text/plain", "/home.html not found, have you fininshed the SPIFFS?");
+    }
 }
 
 void handleStatus(AsyncWebServerRequest * request){
