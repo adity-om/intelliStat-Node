@@ -1,12 +1,11 @@
 /*
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2022-02-06 22:38:22
+ * @Last Modified by: aditya om
+ * @Last Modified time: 2022-02-06 22:46:22
  */
 
 #include "FS.h"
-
 #include "web_server.h"
 #include "config.h"
 #include "debug.h"
@@ -54,6 +53,7 @@ void handleStatus(AsyncWebServerRequest * request){
     s += "\"relay_2_state\":" + String(relay_2_state ? "false":"true") + ",";
     s += "\"relay_3_state\":" + String(relay_3_state ? "false":"true") + ",";
 
+    //temperature settings in console
     s += "\"dallas_temperature\":\"" + String(dallas_temperature) + "\",";
     s += "\"dht_temperature\":\"" + String(dht_temperature) + "\",";
     s += "\"dht_humidity\":\"" + String(dht_humidity) + "\"";
