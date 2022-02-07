@@ -1,8 +1,8 @@
 /*
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
- * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-06 22:46:22
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2022-02-06 22:48:25
  */
 
 #include "FS.h"
@@ -66,5 +66,34 @@ void handleStatus(AsyncWebServerRequest * request){
     response->setCode(200);
     response->print(s);
     request->send(response);
+}
+
+void handleConfig(AsyncWebServerRequest * request){
+    
+    //Form JSON String to respond to the status AJAX requests from App client
+    
+    //output to console
+}
+
+
+
+void handleRelayMessage(String msg){
+   //desrialize JSON input
+
+  // error case debug console print
+
+   //set relay state
+    
+   //save relay state to emulate eeprom for esp8266
+}
+
+void handleRecievedMessage(String msg){
+
+  //handle the JSON document class
+
+   // if error then print to console to server
+
+  //handle relay message
+
 }
 
