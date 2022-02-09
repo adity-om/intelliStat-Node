@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-08 23:19:41
+ * @Last Modified time: 2022-02-09 01:37:41
  */
 
 #include "FS.h"
@@ -153,7 +153,6 @@ void handleNotFound(AsyncWebServerRequest * request){
     request->send(404);
 }
 
-
 void handleRelayMessage(String msg){
    DynamicJsonDocument doc (RELAY_MESSAGE_MEMORY_POOL);
    DeserializationError error = deserializeJson(doc, msg);
@@ -181,12 +180,27 @@ void handleRelayMessage(String msg){
 }
 
 void handleRecievedMessage(String msg){
-
   //handle the JSON document class
+    DynamicJsonDocument doc (RELAY_MESSAGE_MEMORY_POOL);
+    DeserializationError error = deserializeJson(doc, msg);
 
    // if error then print to console to server
+    if(error){
+        DBUG("[web_server] Websocket message deserialization failed with the following error: ");
+        DBUGLN(error.c_str());
+        return;
+    }
 
-  //handle relay message
+   //handle relay message
+   uint8_t msg_type = (uint8_t) doc["type"];
 
+    switch (msg_type){
+        case RELAY_STATE_MESSAGE:
+            handleRelayMessage(msg);
+        break;
+
+        default:
+        break;
+    }
 }
 
