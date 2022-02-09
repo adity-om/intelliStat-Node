@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-08 22:54:25
+ * @Last Modified time: 2022-02-08 23:19:41
  */
 
 #include "FS.h"
@@ -155,13 +155,29 @@ void handleNotFound(AsyncWebServerRequest * request){
 
 
 void handleRelayMessage(String msg){
-   //desrialize JSON input
+   DynamicJsonDocument doc (RELAY_MESSAGE_MEMORY_POOL);
+   DeserializationError error = deserializeJson(doc, msg);
 
   // error case debug console print
+   if(error){
+        DBUG("[web_server] Websocket message deserialization failed with the following error: ");
+        DBUGLN(error.c_str());
+        return;
+   }
 
    //set relay state
+   uint8_t relay_id = (uint8_t) doc["id"];
+   bool relay_state = (bool)doc["state"];
+   const char* relay_name = doc["name"];
+
+   relay_set_state(relay_id, relay_state);
     
-   //save relay state to emulate eeprom for esp8266
+   if(relay_latch_enabled){
+        //save relay state to emulate eeprom for esp8266
+
+        config_save_relay_states();
+
+   }
 }
 
 void handleRecievedMessage(String msg){
