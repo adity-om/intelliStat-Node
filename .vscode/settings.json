@@ -1,4 +1,7 @@
 {
     "fileheader.Author": "aditya om",
-    "fileheader.LastModifiedBy": "aditya om"
+    "fileheader.LastModifiedBy": "aditya om",
+    "author-generator.author": "Aditya Om",
+    "author-generator.email": "adityaom.code@gmail.com",
+    "author-generator.updateOnSave": true
 }

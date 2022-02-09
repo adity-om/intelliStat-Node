@@ -1,8 +1,9 @@
-/*
- * @Author: aditya om 
- * @Date: 2022-02-06 22:15:39 
- * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-09 01:37:41
+/**
+ * @author: Aditya Om
+ * @email: adityaom.code@gmail.com
+ * @created on: 2022-02-06 22:15:39
+ * @last modified: 2022-02-09 12:31:38
+ * @desc Web server for handling client requests
  */
 
 #include "FS.h"
@@ -205,7 +206,39 @@ void handleRecievedMessage(String msg){
 }
 
 void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
-  //Do on WS Event
+  if(type == WS_EVT_CONNECT){
+    DBUGF("ws[%s][%u] connect\n", server->url(), client->id());
+    client->printf("Hello Client %u :)", client->id());
+    client->ping();
+  } else if(type == WS_EVT_DISCONNECT){
+    DBUGF("ws[%s][%u] disconnect: %u\n", server->url(), client->id());
+  } else if(type == WS_EVT_ERROR){
+    DBUGF("ws[%s][%u] error(%u): %s\n", server->url(), client->id(), *((uint16_t*)arg), (char*)data);
+  } else if(type == WS_EVT_PONG){
+    DBUGF("ws[%s][%u] pong[%u]: %s\n", server->url(), client->id(), len, (len)?(char*)data:"");
+  } else if(type == WS_EVT_DATA){
+    AwsFrameInfo * info = (AwsFrameInfo*)arg;
+    String msg = "";
+    if(info->final && info->index == 0 && info->len == len){
+      //the whole message is in a single frame and we got all of it's data
+      DBUGF("ws[%s][%u] %s-message[%llu]: ", server->url(), client->id(), (info->opcode == WS_TEXT)?"text":"binary", info->len);
+
+      if(info->opcode == WS_TEXT){
+        for(size_t i=0; i < info->len; i++) {
+          msg += (char) data[i];
+        }
+      } else {
+        char buff[3];
+        for(size_t i=0; i < info->len; i++) {
+          sprintf(buff, "%02x ", (uint8_t) data[i]);
+          msg += buff ;
+        }
+      }
+      DBUGF("%s\n",msg.c_str());
+
+    }
+    handleRecievedMessage(msg);
+  }
 }
 
 void web_server_setup(){
