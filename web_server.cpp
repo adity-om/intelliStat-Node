@@ -105,6 +105,53 @@ void handleLastValues(AsyncWebServerRequest * request){
     request->send(response);
 }
 
+//Copied from library/ESP_AsyncFSBrowser.ino
+void handleNotFound(AsyncWebServerRequest * request){
+    DBUG("NOT_FOUND: ");
+    if(request->method() == HTTP_GET)
+      DBUGF("GET");
+    else if(request->method() == HTTP_POST)
+      DBUGF("POST");
+    else if(request->method() == HTTP_DELETE)
+      DBUGF("DELETE");
+    else if(request->method() == HTTP_PUT)
+      DBUGF("PUT");
+    else if(request->method() == HTTP_PATCH)
+      DBUGF("PATCH");
+    else if(request->method() == HTTP_HEAD)
+      DBUGF("HEAD");
+    else if(request->method() == HTTP_OPTIONS)
+      DBUGF("OPTIONS");
+    else
+      DBUGF("UNKNOWN");
+    DBUGF(" http://%s%s\n", request->host().c_str(), request->url().c_str());
+
+    if(request->contentLength()){
+      DBUGF("_CONTENT_TYPE: %s\n", request->contentType().c_str());
+      DBUGF("_CONTENT_LENGTH: %u\n", request->contentLength());
+    }
+
+    int headers = request->headers();
+    int i;
+    for(i=0;i<headers;i++){
+      AsyncWebHeader* h = request->getHeader(i);
+      DBUGF("_HEADER[%s]: %s\n", h->name().c_str(), h->value().c_str());
+    }
+
+    int params = request->params();
+    for(i=0;i<params;i++){
+      AsyncWebParameter* p = request->getParam(i);
+      if(p->isFile()){
+        DBUGF("_FILE[%s]: %s, size: %u\n", p->name().c_str(), p->value().c_str(), p->size());
+      } else if(p->isPost()){
+        DBUGF("_POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
+      } else {
+        DBUGF("_GET[%s]: %s\n", p->name().c_str(), p->value().c_str());
+      }
+    }
+
+    request->send(404);
+}
 
 
 void handleRelayMessage(String msg){
