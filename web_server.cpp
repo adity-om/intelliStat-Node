@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-06 22:48:25
+ * @Last Modified time: 2022-02-08 22:48:25
  */
 
 #include "FS.h"
@@ -69,10 +69,25 @@ void handleStatus(AsyncWebServerRequest * request){
 }
 
 void handleConfig(AsyncWebServerRequest * request){
-    
+    AsyncResponseStream *response;
+    if(false == requestPreProcess(request, response)){
+        return;
+    }
+
     //Form JSON String to respond to the status AJAX requests from App client
-    
+    String s = "{";
+    s += "\"relay_1_name\":\"" + relay_1_name + "\"," ;
+    s += "\"relay_2_name\":\"" + relay_2_name + "\"," ;
+    s += "\"relay_3_name\":\"" + relay_3_name + "\"" ;
+    s += "}";
+
     //output to console
+    DBUG("[web_server] '/config' response");
+    DBUGLN(s);
+
+    response->setCode(200);
+    response->print(s);
+    request->send(response);
 }
 
 
