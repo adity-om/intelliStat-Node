@@ -204,3 +204,15 @@ void handleRecievedMessage(String msg){
     }
 }
 
+void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+  //Do on WS Event
+}
+
+void web_server_setup(){
+    //begin SPI FFS
+   
+    //set default
+
+    //Start server & server root html
+    
+}
