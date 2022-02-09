@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-06 22:15:39 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-08 22:48:25
+ * @Last Modified time: 2022-02-08 22:54:25
  */
 
 #include "FS.h"
@@ -87,6 +87,21 @@ void handleConfig(AsyncWebServerRequest * request){
 
     response->setCode(200);
     response->print(s);
+    request->send(response);
+}
+
+void handleLastValues(AsyncWebServerRequest * request){
+    AsyncResponseStream *response;
+    if(false == requestPreProcess(request, response)){
+        return;
+    }
+
+    //output to console
+    DBUG("[web_server] '/lastvalues' response");
+    DBUGLN(lastvalues);
+
+    response->setCode(200);
+    response->print(lastvalues);
     request->send(response);
 }
 
