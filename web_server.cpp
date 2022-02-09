@@ -243,9 +243,22 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
 
 void web_server_setup(){
     //begin SPI FFS
-   
+    SPIFFS.begin();
+
     //set default
+    server.serveStatic("/", SPIFFS, "/")
+        .setDefaultFile("home.html");
 
     //Start server & server root html
-    
+    server.on("/", handleHome);
+
+    server.on("/status", handleStatus);
+    server.on("/config", handleConfig);
+    server.on("/lastvalues", handleLastValues);
+
+    server.onNotFound(handleNotFound);
+    server.begin();
+
+    ws.onEvent(onWsEvent);
+    server.addHandler(&ws);    
 }
