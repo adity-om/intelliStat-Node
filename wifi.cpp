@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-11 23:28:20 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-11 23:51:52
+ * @Last Modified time: 2022-02-11 23:53:54
  */
 #include "wifi.h"
 #include "debug.h"
@@ -97,13 +97,20 @@ void wifi_setup(){
 * else if the current PIN STATE is OFF, then assign the "OFF_TIME (= 4 s)" to "LED TIMEOUT".
 */
 void wifi_loop(){
- //flip the LED state
- 
- //toggle the LED accordingly
+ #ifdef WIFI_LED
+       if(millis() > wifiledTimeout){
+           wifiledTimeout = !wifiledState; //flip the LED state
+           digitalWrite(WIFI_LED, wifiledState); //toggle the LED accordingly
 
         //check PIN STATE 
-           
+           if(wifiledState == WIFI_LED_ON_STATE){
                //IF ON
-              
-               //IF OFF 
+               wifiledTimeout = millis() + WIFI_LED_ON_TIME;
+           }
+           else {
+               //IF OFF
+               wifiledTimeout = millis() + WIFI_LED_OFF_TIME;
+           }
+       }
+ #endif
 }
