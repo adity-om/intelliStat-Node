@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-11 23:28:20 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-11 23:36:48
+ * @Last Modified time: 2022-02-11 23:41:03
  */
 #include "wifi.h"
 #include "debug.h"
@@ -23,29 +23,46 @@ String epass = "mywifipassword"; // Enter the WiFi access point password
 //get IP address function
 void get_ip(){
     //get local
+    IPAddress myAddress = WiFi.localIP();
+    char tmpStr[40];
     
     //add logging
+    sprintf(tmpStr, "%d.%d.%d.%d", myAddress[0], myAddress[1], myAddress[2], myAddress[3]);
+    ipaddress = tmpStr;
 
     //add connection status log
+    DBUG("[WiFi] Connected, IP: ");
+    DBUGLN(tmpStr);
 
     //blink the LED if connection SUCCESS
+    #ifdef WIFI_LED
+        wifiledState = WIFI_LED_ON_STATE;
+        digitalWrite(WIFI_LED, wifiledState);
+    #endif
 }
 
 void start_client(){
-    
-    //convert it to C string to take input from console
-   
-    //Convert to C STring to execute
+  
+    DBUG("[WiFi]Connecting to SSID: ");
+    DBUGLN(esid.c_str()); //convert it to C string to take input from console
+    DBUG("Pass: ");
+    DBUGLN(epass.c_str()); //Convert to C STring to execute
 
     //execute the WiFi begin function that takes WiFi username and Password
+    WiFi.begin(esid.c_str(), epass.c_str());
 
     //add delay to allow ESP8266 some time to configure its internal WiFi antenna and make it ready for functioning
+    delay(50);
 
     //add reconnection and retry logic in case Connection is UNSUCCESFUL
+    if(WiFi.waitForConnectResult() != WL_CONNECTED){
         //CONSOLE output if connection failed
-        
+        DBUGLN("[WiFi] WiFi connect failed! Rebooting...");
+        delay(1000);
         //restart the reconnection
-        
+        ESP.restart();
+    }
+    get_ip();        
 }
 
 void wifi_start(){
