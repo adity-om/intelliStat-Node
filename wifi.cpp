@@ -2,7 +2,7 @@
  * @Author: aditya om 
  * @Date: 2022-02-11 23:28:20 
  * @Last Modified by: aditya om
- * @Last Modified time: 2022-02-11 23:48:26
+ * @Last Modified time: 2022-02-11 23:51:52
  */
 #include "wifi.h"
 #include "debug.h"
@@ -77,7 +77,14 @@ void wifi_start(){
 }
 
 void wifi_setup(){
-   //standad setup stuff
+   //blink LED for WiFi state
+   #ifdef WIFI_LED
+        pinMode(WIFI_LED, OUTPUT);
+        digitalWrite(WIFI_LED, wifiledState);
+    #endif
+    
+    //call wifi start
+    wifi_start();
 }
 
 //Task Execution Handler 
