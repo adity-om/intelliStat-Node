@@ -20,37 +20,41 @@
 void setup() {
 
    //add delay
-   
-   //enable debugging: initialize Debug Port
-   
-   //Debug messages upon first start to Console Output
-   
-   
-   //display version of server firmware 
+   delay(2000);
 
+   //enable debugging: initialize Debug Port
+   DEBUG_BEGIN(115200);
+
+   //Debug messages upon first start to Console Output
+   DBUGLN();
+   DBUG("Wireless - Pig Project Server");
+      
+   //display version of server firmware 
+   DBUG("Version : 1.0.1"); /*Added to keep track of changes to firmware*/
    
    //display the unique ESP Chip ID
-
+   DBUG(ESP.getChipId());
 
    //Load Config: Read saved settings from the config
-   
+   config_load_settings();
    
    //WiFi Setup: Initialize the WiFi
-
+   wifi_setup();
 
    //Sensors Setup: Initialize Sensors
-
+   sensors_setup();
 
    //Relay Setup: Initialize relays(Actuation modules)
- 
-   //Web Server Setup: Bring up the Web server
+   relay_setup();
 
+   //Web Server Setup: Bring up the Web server
+   web_server_setup();
 
    //Display mesage to console that : SERVER IS UP !! :)
-
+   DBUG("[src] Server started Successfully!");
 
    //before prog entry to loop, give a delay of 100 milliseconds
-
+   delay(100);
 }
 
 // -------------------------------------------------------------------
