@@ -27,7 +27,7 @@ void setup() {
 
    //Debug messages upon first start to Console Output
    DBUGLN();
-   DBUG("Wireless - Pig Project Server");
+   DBUG("Wireless - Intellistat Node Server");
       
    //display version of server firmware 
    DBUG("Version : 1.0.1"); /*Added to keep track of changes to firmware*/
@@ -65,13 +65,13 @@ void loop () {
     //wifi loop
     /*
     * This loop will handle the toggling of an LED to indicate the STATE of the WiFi connection
-    */  
-
+    */
+    wifi_loop(); 
     
     //sensors loop
     /*
     * This loop will periodically poll the sensors and retrieve the data. 
     * Task execution loop impentation is done using the Arduino Miller's function
     */
-
+    sensors_loop();
 }
